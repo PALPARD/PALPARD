@@ -30,18 +30,24 @@ text {
   97% { transform: translate(-2px, 0); }
 }
 @keyframes fly-av {
-  from { transform: translate(-54px, 0); }
-  to { transform: translate(934px, -40px); }
+  from { transform: translate(-64px, 0); }
+  to { transform: translate(944px, -45px); }
+}
+@keyframes fly-av-back {
+  from { transform: translate(944px, -10px); }
+  to { transform: translate(-64px, 25px); }
 }
 @keyframes av-beacon { 0%, 88%, 100% { opacity: 0; } 90%, 96% { opacity: 1; } }
-@keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
+@keyframes spotlight { 0%, 100% { opacity: 0.15; transform: rotate(-8deg); } 50% { opacity: 0.35; transform: rotate(12deg); } }
 
 .cursor { animation: blink 1s step-end infinite; }
 .dot-live { animation: pulse 1.8s ease-in-out infinite; }
 .glitch-yw { animation: glitch-yw 5s linear infinite; }
 .glitch-cy { animation: glitch-cy 5s linear infinite; }
 .av-craft { animation: fly-av 24s linear infinite; }
+.av-craft-back { animation: fly-av-back 30s linear infinite; }
 .av-bl { animation: av-beacon 1.2s infinite; }
+.spotlight-beam { animation: spotlight 8s ease-in-out infinite alternate; transform-origin: 350px 300px; }
 
   </style>
   <defs>
@@ -64,8 +70,12 @@ text {
 </filter>
 <linearGradient id="cyber-fog" x1="0" y1="0" x2="0" y2="1">
   <stop offset="0%" stop-color="#00F0FF" stop-opacity="0"/>
-  <stop offset="60%" stop-color="#00F0FF" stop-opacity="0.05"/>
-  <stop offset="100%" stop-color="#FF003C" stop-opacity="0.12"/>
+  <stop offset="50%" stop-color="#00F0FF" stop-opacity="0.08"/>
+  <stop offset="100%" stop-color="#FF003C" stop-opacity="0.18"/>
+</linearGradient>
+<linearGradient id="beam-grad" x1="0" y1="1" x2="0" y2="0">
+  <stop offset="0%" stop-color="#00F0FF" stop-opacity="0.35"/>
+  <stop offset="100%" stop-color="#00F0FF" stop-opacity="0"/>
 </linearGradient>
 
   </defs>

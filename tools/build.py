@@ -109,18 +109,24 @@ text {{
   97% {{ transform: translate(-2px, 0); }}
 }}
 @keyframes fly-av {{
-  from {{ transform: translate({FL - 70}px, 0); }}
-  to {{ transform: translate({FR + 70}px, -40px); }}
+  from {{ transform: translate({FL - 80}px, 0); }}
+  to {{ transform: translate({FR + 80}px, -45px); }}
+}}
+@keyframes fly-av-back {{
+  from {{ transform: translate({FR + 80}px, -10px); }}
+  to {{ transform: translate({FL - 80}px, 25px); }}
 }}
 @keyframes av-beacon {{ 0%, 88%, 100% {{ opacity: 0; }} 90%, 96% {{ opacity: 1; }} }}
-@keyframes scanline {{ from {{ transform: translateY(0); }} to {{ transform: translateY(360px); }} }}
+@keyframes spotlight {{ 0%, 100% {{ opacity: 0.15; transform: rotate(-8deg); }} 50% {{ opacity: 0.35; transform: rotate(12deg); }} }}
 
 .cursor {{ animation: blink 1s step-end infinite; }}
 .dot-live {{ animation: pulse 1.8s ease-in-out infinite; }}
 .glitch-yw {{ animation: glitch-yw 5s linear infinite; }}
 .glitch-cy {{ animation: glitch-cy 5s linear infinite; }}
 .av-craft {{ animation: fly-av 24s linear infinite; }}
+.av-craft-back {{ animation: fly-av-back 30s linear infinite; }}
 .av-bl {{ animation: av-beacon 1.2s infinite; }}
+.spotlight-beam {{ animation: spotlight 8s ease-in-out infinite alternate; transform-origin: 350px 300px; }}
 """
 
 DEFS = f"""
@@ -142,8 +148,12 @@ DEFS = f"""
 </filter>
 <linearGradient id="cyber-fog" x1="0" y1="0" x2="0" y2="1">
   <stop offset="0%" stop-color="{CP_CYAN}" stop-opacity="0"/>
-  <stop offset="60%" stop-color="{CP_CYAN}" stop-opacity="0.05"/>
-  <stop offset="100%" stop-color="{CP_RED}" stop-opacity="0.12"/>
+  <stop offset="50%" stop-color="{CP_CYAN}" stop-opacity="0.08"/>
+  <stop offset="100%" stop-color="{CP_RED}" stop-opacity="0.18"/>
+</linearGradient>
+<linearGradient id="beam-grad" x1="0" y1="1" x2="0" y2="0">
+  <stop offset="0%" stop-color="{CP_CYAN}" stop-opacity="0.35"/>
+  <stop offset="100%" stop-color="{CP_CYAN}" stop-opacity="0"/>
 </linearGradient>
 """
 
@@ -211,39 +221,48 @@ def wrap_slice(h, body_content, *, title, desc, top=False, bottom=False):
     return svg
 
 # ==============================================================================
-# SLICE 1: HEADER (h = 360px) — ZERO TEXT COLLISION GUARANTEE
+# SLICE 1: HEADER (h = 360px) — 100% COLLISION-PROOF MODULAR CYBERPUNK HUD
 # ==============================================================================
 def render_header():
     h = 360
-    bar_y = M + 21
 
+    # 3 Separate, Non-Overlapping HUD Pods:
+    # Pod 1: Left (x=28..258, w=230)
+    # Pod 2: Center (x=345..535, w=190, center at 440) -> 87px gap!
+    # Pod 3: Right (x=622..852, w=230) -> 87px gap!
     body = f"""
-    <!-- Top Cyberpunk Status Bar Background -->
-    <rect x="{FL}" y="{M}" width="{FR-FL}" height="32" fill="{CP_CYAN}" fill-opacity="0.12"/>
-    <line x1="{FL}" y1="{M+32}" x2="{FR}" y2="{M+32}" stroke="{CP_CYAN}" stroke-opacity="0.5" stroke-width="1.5"/>
+    <!-- Top Cyberpunk Status Bar Strip -->
+    <rect x="{FL}" y="{M}" width="{FR-FL}" height="34" fill="{CP_BLACK}" fill-opacity="0.75"/>
+    <line x1="{FL}" y1="{M+34}" x2="{FR}" y2="{M+34}" stroke="{CP_CYAN}" stroke-opacity="0.6" stroke-width="1.5"/>
 
-    <!-- Left Segment: Fixed at x=34, max width ~220px -->
-    <text x="{FL+18}" y="{bar_y}" font-size="11" font-weight="700" letter-spacing="1" fill="{CP_CYAN}">SYS://CYBERDECK // NODE:PALPARD</text>
-
-    <!-- Center Segment: Fixed at x=440 (Center Badge), perfectly isolated -->
-    <g transform="translate(440, {M+16})">
-      <rect x="-65" y="-10" width="130" height="20" rx="3" fill="{CP_CYAN}" fill-opacity="0.12" stroke="{CP_CYAN}" stroke-opacity="0.5" stroke-width="1"/>
-      <text x="0" y="4" font-size="10" font-weight="800" letter-spacing="2" text-anchor="middle" fill="{CP_CYAN}">NIGHT CITY</text>
+    <!-- Pod 1 (Left): Terminal Subsystem Node -->
+    <g transform="translate({FL+12}, {M+5})">
+      <rect x="0" y="0" width="230" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
+      <circle class="dot-live" cx="12" cy="12" r="3.5" fill="{CP_GREEN}" filter="url(#glow-neon)"/>
+      <text x="24" y="16" font-size="10.5" font-weight="700" letter-spacing="1" fill="{CP_CYAN}">SYS://CYBERDECK · NODE:PALPARD</text>
     </g>
 
-    <!-- Right Segment: Right-aligned ending at x=846, plenty of buffer room -->
-    <circle class="dot-live" cx="{FR-220}" cy="{M+16}" r="4" fill="{CP_GREEN}" filter="url(#glow-neon)"/>
-    <text x="{FR-18}" y="{bar_y}" font-size="11" font-weight="700" letter-spacing="1" text-anchor="end" fill="{CP_YELLOW}">RAM: 16/16 // ICE: BYPASSED</text>
+    <!-- Pod 2 (Center): Night City Location Badge -->
+    <g transform="translate(440, {M+5})">
+      <rect x="-95" y="0" width="190" height="24" rx="2" fill="{CP_YELLOW}" fill-opacity="0.1" stroke="{CP_YELLOW}" stroke-opacity="0.4"/>
+      <text x="0" y="16" font-size="10.5" font-weight="800" letter-spacing="2" text-anchor="middle" fill="{CP_YELLOW}">[ NIGHT CITY · SECTOR 04 ]</text>
+    </g>
 
-    <!-- Angled Cyberpunk Tech Accent -->
-    <polygon points="{FL+18},{M+32} {FL+34},{M+48} {FL+180},{M+48} {FL+196},{M+32}" fill="{CP_YELLOW}" fill-opacity="0.25"/>
-    <text x="{FL+38}" y="{M+44}" font-size="9" font-weight="800" letter-spacing="2" fill="{CP_YELLOW}">NETRUNNER CONSOLE v3.2</text>
+    <!-- Pod 3 (Right): Hardware Telemetry & ICE Status -->
+    <g transform="translate({FR-242}, {M+5})">
+      <rect x="0" y="0" width="230" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
+      <text x="115" y="16" font-size="10.5" font-weight="700" letter-spacing="1" text-anchor="middle" fill="{CP_CYAN}">RAM: 16/16 // ICE: BYPASSED</text>
+    </g>
+
+    <!-- Angled Cyberpunk Tech Accent Badge -->
+    <polygon points="{FL+18},{M+34} {FL+34},{M+50} {FL+180},{M+50} {FL+196},{M+34}" fill="{CP_YELLOW}" fill-opacity="0.25"/>
+    <text x="{FL+38}" y="{M+46}" font-size="9" font-weight="800" letter-spacing="2" fill="{CP_YELLOW}">NETRUNNER CONSOLE v3.2</text>
 
     <!-- Terminal Command Line Prompt -->
-    <text x="{X}" y="100" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> whoami --status</text>
+    <text x="{X}" y="104" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> whoami --status</text>
 
     <!-- Chromatic Aberration Glitch Title: PALPARD -->
-    <g transform="translate({X}, 168)" font-weight="900" letter-spacing="4" style="font-size: 54px;">
+    <g transform="translate({X}, 172)" font-weight="900" letter-spacing="4" style="font-size: 56px;">
       <!-- Crimson Shadow Layer -->
       <g class="glitch-cy">
         <text x="3" y="0" fill="{CP_RED}" opacity="0.85">PALPARD</text>
@@ -257,8 +276,8 @@ def render_header():
       <text x="0" y="0" fill="{CP_YELLOW}">PALPARD</text>
     </g>
 
-    <!-- Operator Specs lines with clean spacing -->
-    <g transform="translate({X}, 208)">
+    <!-- Operator Specs HUD Box with Neon Framing -->
+    <g transform="translate({X}, 212)">
       <text x="0" y="0" class="fg"><tspan class="yw">&gt;&gt; OPERATOR:</tspan> TAHA <tspan class="dim">//</tspan> <tspan class="cy">PALPARD</tspan></text>
       <text x="0" y="24" class="fg"><tspan class="yw">&gt;&gt; CLASS:</tspan> SECURITY RESEARCHER &amp; BUG BOUNTY SPECIALIST</text>
       <text x="0" y="48" class="fg"><tspan class="yw">&gt;&gt; SPECIALIZATION:</tspan> IDOR · BUSINESS LOGIC · SSRF · RECON AUTOMATION</text>
@@ -266,13 +285,13 @@ def render_header():
     </g>
 
     <!-- Blinking Prompt -->
-    <g transform="translate({X}, 318)">
+    <g transform="translate({X}, 320)">
       <text x="0" y="0" class="rd">[netrunner@night-city]$</text>
       <rect class="cursor" x="180" y="-13" width="10" height="17" fill="{CP_YELLOW}" filter="url(#glow-neon)"/>
     </g>
 
     <!-- CRT Scanline Mask -->
-    <rect x="{FL}" y="{M+33}" width="{FR-FL}" height="{h-M-33}" fill="url(#crt-scan)" pointer-events="none"/>
+    <rect x="{FL}" y="{M+35}" width="{FR-FL}" height="{h-M-35}" fill="url(#crt-scan)" pointer-events="none"/>
     """
     return wrap_slice(h, body, title="PALPARD Netrunner Cyberdeck", desc="Cyberpunk console header for PALPARD", top=True)
 
@@ -320,15 +339,15 @@ def render_telemetry():
 
 # ==============================================================================
 # SLICE 3: 10/10 NIGHT CITY 3D SKYLINE (h = 680px)
-# True Isometric Parallelograms, Architectural Districts, Glowing Signs & Spire Beacons
+# Multi-tiered Mega-Towers, Skybridges, Holographic Signs, Dual Flying AVs, Searchlights
 # ==============================================================================
 def render_city(calendar):
     h = 680
     CITY_OX = 350
-    CITY_OY = 270
+    CITY_OY = 265
     CITY_TW = 14
     CITY_TH = 7.5
-    CITY_HMAX = 140
+    CITY_HMAX = 145
 
     if not calendar:
         calendar = [("2026-01-01", 0)] * 365
@@ -361,14 +380,15 @@ def render_city(calendar):
         return f"M {pt(p1)} L {pt(p2)} L {pt(p3)} L {pt(p4)} Z"
 
     shapes = []
-    signs = []
+    skybridges = []
+    holograms = []
     beacons = []
 
-    # Distinct Cyberpunk 2077 Night City Roofs
     ROOFS = ["#1A2538", "#0E566E", "#00F0FF", "#FCEE0A", "#FF003C"]
-
-    # Deterministic RNG for consistent city visuals
     rng = random.Random(2077)
+
+    # Track tall building roof coordinates to build skybridges
+    tall_towers = []
 
     for w_col, dow, n in cells:
         cx = CITY_OX + (w_col - dow) * CITY_TW / 2
@@ -378,14 +398,11 @@ def render_city(calendar):
         T = (cx, cy - CITY_TH / 2)
         B = (cx, cy + CITY_TH / 2)
 
-        # Baseline Urban District Architecture:
-        # Instead of empty flat void, Night City has varied low/mid-rise buildings
-        # creating a dense metropolis canyons
+        # Baseline Urban Architecture (Dense metropolis texture)
         if n == 0:
             pattern_hash = (w_col * 17 + dow * 31) % 100
-            if pattern_hash < 65:
-                # Mid/low-rise corporate block
-                bh = 6 + (pattern_hash % 18)
+            if pattern_hash < 70:
+                bh = 8 + (pattern_hash % 20)
                 Tu = (T[0], T[1] - bh)
                 Ru = (R[0], R[1] - bh)
                 Bu = (B[0], B[1] - bh)
@@ -393,23 +410,22 @@ def render_city(calendar):
 
                 wall_l = "#11192A" if pattern_hash % 2 == 0 else "#0E1524"
                 wall_r = "#0A0F1B" if pattern_hash % 2 == 0 else "#070C15"
-                roof = "#1A2538" if pattern_hash < 45 else "#132D42"
+                roof = "#1A2538" if pattern_hash < 50 else "#132D42"
 
                 shapes.append(f'<path d="M {pt(L)} L {pt(B)} L {pt(Bu)} L {pt(Lu)} Z" fill="{wall_l}"/>')
                 shapes.append(f'<path d="M {pt(B)} L {pt(R)} L {pt(Ru)} L {pt(Bu)} Z" fill="{wall_r}"/>')
-                shapes.append(f'<path d="M {pt(Tu)} L {pt(Ru)} L {pt(Bu)} L {pt(Lu)} Z" fill="{roof}" stroke="{CP_CYAN}" stroke-opacity="0.12" stroke-width="0.5"/>')
+                shapes.append(f'<path d="M {pt(Tu)} L {pt(Ru)} L {pt(Bu)} L {pt(Lu)} Z" fill="{roof}" stroke="{CP_CYAN}" stroke-opacity="0.15" stroke-width="0.5"/>')
 
-                # Occasional lit window on baseline blocks
-                if bh > 14 and pattern_hash % 3 == 0:
+                # Windows on baseline blocks
+                if bh > 14 and pattern_hash % 2 == 0:
                     win_quad = iso_quad(L, B, 0.25, 0.45, 6, 4)
-                    shapes.append(f'<path d="{win_quad}" fill="{CP_CYAN}" opacity="0.6"/>')
+                    shapes.append(f'<path d="{win_quad}" fill="{CP_CYAN}" opacity="0.65"/>')
             else:
-                # Street level ground pad with cyan circuit seam
                 shapes.append(f'<path d="M {pt(T)} L {pt(R)} L {pt(B)} L {pt(L)} Z" fill="#090E17" stroke="{CP_CYAN}" stroke-opacity="0.08" stroke-width="0.5"/>')
             continue
 
         # Active Contribution Mega-Tower!
-        bh = 38 + (CITY_HMAX - 38) * math.sqrt(n / peak)
+        bh = 45 + (CITY_HMAX - 45) * math.sqrt(n / peak)
         level = min(4, int((n / peak) * 4) + 1)
         roof_color = ROOFS[level]
 
@@ -418,54 +434,76 @@ def render_city(calendar):
         Bu = (B[0], B[1] - bh)
         Lu = (L[0], L[1] - bh)
 
-        # Left wall (shadowed navy), Right wall (dark carbon), Roof (Cyberpunk neon)
+        tall_towers.append((Bu[0], Bu[1], bh))
+
+        # Main tower walls
         shapes.append(f'<path d="M {pt(L)} L {pt(B)} L {pt(Bu)} L {pt(Lu)} Z" fill="#141E33"/>')
         shapes.append(f'<path d="M {pt(B)} L {pt(R)} L {pt(Ru)} L {pt(Bu)} Z" fill="#0D1322"/>')
         shapes.append(f'<path d="M {pt(Tu)} L {pt(Ru)} L {pt(Bu)} L {pt(Lu)} Z" fill="{roof_color}" stroke="{roof_color}" stroke-width="0.8"/>')
 
-        # True Isometric Windows across floors
+        # Tiered Rooftop Setback for high-level towers (Arasaka Tower style)
+        if level >= 3:
+            s_bh = 16
+            s_T = (Tu[0], Tu[1] - s_bh)
+            s_R = (Ru[0] - 2, Ru[1] - s_bh)
+            s_B = (Bu[0], Bu[1] - s_bh - 2)
+            s_L = (Lu[0] + 2, Lu[1] - s_bh)
+            shapes.append(f'<path d="M {pt(Lu)} L {pt(Bu)} L {pt(s_B)} L {pt(s_L)} Z" fill="#1A2845"/>')
+            shapes.append(f'<path d="M {pt(Bu)} L {pt(Ru)} L {pt(s_R)} L {pt(s_B)} Z" fill="#101A2E"/>')
+            shapes.append(f'<path d="M {pt(s_T)} L {pt(s_R)} L {pt(s_B)} L {pt(s_L)} Z" fill="{roof_color}" filter="url(#glow-soft)"/>')
+
+        # Windows mapped in 3D isometric quads
         num_floors = int((bh - 10) // 8)
         for flr in range(num_floors):
             v0 = 6 + flr * 8
-            # Left face windows (two columns of isometric quads)
+            # Left face
             for u0, du in [(0.15, 0.3), (0.55, 0.3)]:
-                is_lit = rng.random() < 0.65
-                if is_lit:
+                if rng.random() < 0.7:
                     wcolor = CP_YELLOW if rng.random() < 0.45 else CP_CYAN
                     w_quad = iso_quad(L, B, u0, du, v0, 4)
-                    shapes.append(f'<path d="{w_quad}" fill="{wcolor}" opacity="0.9"/>')
-
-            # Right face windows (two columns of isometric quads)
+                    shapes.append(f'<path d="{w_quad}" fill="{wcolor}" opacity="0.95"/>')
+            # Right face
             for u0, du in [(0.15, 0.3), (0.55, 0.3)]:
-                is_lit = rng.random() < 0.55
-                if is_lit:
-                    wcolor = CP_CYAN if rng.random() < 0.6 else CP_RED
+                if rng.random() < 0.6:
+                    wcolor = CP_CYAN if rng.random() < 0.65 else CP_RED
                     w_quad = iso_quad(B, R, u0, du, v0, 4)
-                    shapes.append(f'<path d="{w_quad}" fill="{wcolor}" opacity="0.8"/>')
+                    shapes.append(f'<path d="{w_quad}" fill="{wcolor}" opacity="0.85"/>')
 
-        # Holographic Vertical Neon Sign on Mega-Towers
-        if bh > 70:
-            sign_quad = iso_quad(L, B, 0.2, 0.6, bh - 32, 24)
-            signs.append(f'<path d="{sign_quad}" fill="{CP_YELLOW}" fill-opacity="0.2" stroke="{CP_YELLOW}" stroke-width="1" filter="url(#glow-soft)"/>')
-            signs.append(f'<circle cx="{Bu[0]-4}" cy="{Bu[1] - bh + 20}" r="2" fill="{CP_YELLOW}"/>')
+        # Holographic Vertical Neon Signboards on Mega-Towers
+        if bh > 65:
+            sign_text = "ARASAKA" if level == 4 else ("PALPARD" if level == 3 else "NETRUNNER")
+            sign_color = CP_RED if level == 4 else (CP_YELLOW if level == 3 else CP_CYAN)
+            sign_quad = iso_quad(L, B, 0.15, 0.65, bh - 38, 28)
+            holograms.append(f'<path d="{sign_quad}" fill="{sign_color}" fill-opacity="0.25" stroke="{sign_color}" stroke-width="1.2" filter="url(#glow-soft)"/>')
+            holograms.append(f'<text x="{Bu[0]-6}" y="{Bu[1]-bh+24}" font-size="8.5" font-weight="900" letter-spacing="1" fill="{sign_color}" transform="rotate(-26 {Bu[0]-6} {Bu[1]-bh+24})">{sign_text}</text>')
 
         # Spire Antenna with Pulsing Warning Beacon
-        if level >= 2:
-            spire_h = 24 if level >= 3 else 14
-            spire_top = (Bu[0], Tu[1] - spire_h)
-            beacons.append(f'<line x1="{Bu[0]}" y1="{Tu[1]}" x2="{spire_top[0]}" y2="{spire_top[1]}" stroke="{CP_CYAN}" stroke-width="1.2"/>')
-            beacon_color = CP_RED if level == 4 else CP_YELLOW
-            beacons.append(f'<circle class="dot-live" cx="{spire_top[0]}" cy="{spire_top[1]}" r="2.8" fill="{beacon_color}" filter="url(#glow-neon)"/>')
+        spire_h = 28 if level >= 3 else 16
+        spire_top = (Bu[0], Tu[1] - (16 if level >= 3 else 0) - spire_h)
+        beacons.append(f'<line x1="{Bu[0]}" y1="{Tu[1] - (16 if level >= 3 else 0)}" x2="{spire_top[0]}" y2="{spire_top[1]}" stroke="{CP_CYAN}" stroke-width="1.5"/>')
+        beacon_color = CP_RED if level == 4 else CP_YELLOW
+        beacons.append(f'<circle class="dot-live" cx="{spire_top[0]}" cy="{spire_top[1]}" r="3" fill="{beacon_color}" filter="url(#glow-neon)"/>')
 
-    # Night City Sky: Stars, Full Moon with Neon Halo, Flying Trauma Team AV
+    # Skybridges connecting nearby towers
+    if len(tall_towers) >= 2:
+        for i in range(len(tall_towers) - 1):
+            t1 = tall_towers[i]
+            t2 = tall_towers[i+1]
+            dist = math.hypot(t1[0] - t2[0], t1[1] - t2[1])
+            if dist < 120:
+                sb_y = min(t1[1] - t1[2] + 40, t2[1] - t2[2] + 40)
+                skybridges.append(f'<line x1="{t1[0]}" y1="{sb_y}" x2="{t2[0]}" y2="{sb_y}" stroke="{CP_CYAN}" stroke-width="4" stroke-opacity="0.8" filter="url(#glow-soft)"/>')
+                skybridges.append(f'<line x1="{t1[0]}" y1="{sb_y}" x2="{t2[0]}" y2="{sb_y}" stroke="#FFFFFF" stroke-width="1.5"/>')
+
+    # Night City Sky: Stars, Full Moon with Holographic Target Rings
     stars = []
     sky_rng = random.Random(2077)
-    for _ in range(40):
-        sx = 410 + sky_rng.random() * 420
-        sy = 65 + sky_rng.random() * 175
-        s_fill = CP_CYAN if sky_rng.random() > 0.55 else "#FFFFFF"
-        s_r = 0.6 + sky_rng.random() * 0.7
-        s_op = 0.35 + sky_rng.random() * 0.55
+    for _ in range(50):
+        sx = 380 + sky_rng.random() * 450
+        sy = 55 + sky_rng.random() * 190
+        s_fill = CP_CYAN if sky_rng.random() > 0.55 else (CP_YELLOW if sky_rng.random() > 0.85 else "#FFFFFF")
+        s_r = 0.6 + sky_rng.random() * 0.8
+        s_op = 0.35 + sky_rng.random() * 0.6
         stars.append(f'<circle cx="{sx:.1f}" cy="{sy:.1f}" r="{s_r:.1f}" fill="{s_fill}" opacity="{s_op:.2f}"/>')
 
     body = f"""
@@ -475,38 +513,53 @@ def render_city(calendar):
       <text x="0" y="24" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> ./netrunner --scan-skyline --sector watson --grid 53x7</text>
     </g>
 
-    <!-- Deep Night City Atmosphere & Glowing Moon -->
+    <!-- Deep Night City Atmosphere & Glowing Moon with Holographic Rings -->
     <g>{"".join(stars)}</g>
-    <circle cx="{FR-90}" cy="135" r="48" fill="{CP_CYAN}" fill-opacity="0.1" filter="url(#glow-neon)"/>
-    <circle cx="{FR-90}" cy="135" r="18" fill="#F4F8FB" opacity="0.9"/>
-    <circle cx="{FR-83}" cy="130" r="15" fill="{CP_BG}"/>
+    <circle cx="{FR-90}" cy="135" r="54" fill="{CP_CYAN}" fill-opacity="0.08" filter="url(#glow-neon)"/>
+    <circle cx="{FR-90}" cy="135" r="28" fill="none" stroke="{CP_YELLOW}" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="4,4"/>
+    <circle cx="{FR-90}" cy="135" r="18" fill="#F4F8FB" opacity="0.95"/>
+    <circle cx="{FR-82}" cy="129" r="15" fill="{CP_BG}"/>
 
-    <!-- Flying Trauma Team AV (Aerodyne) with Pulsing Nav Beacons -->
+    <!-- Searchlight beam sweeping from corporate tower into the clouds -->
+    <polygon class="spotlight-beam" points="350,300 280,40 330,40" fill="url(#beam-grad)" pointer-events="none"/>
+
+    <!-- Flying Trauma Team AV (High-speed transport left to right) -->
     <g class="av-craft">
-      <g transform="translate(0, 115)">
-        <polygon points="0,4 20,0 28,6 18,10 0,7" fill="{CP_RED}" opacity="0.95"/>
-        <polygon points="6,2 14,0 16,4 8,4" fill="{CP_YELLOW}"/>
-        <line x1="28" y1="6" x2="60" y2="12" stroke="{CP_CYAN}" stroke-opacity="0.3" stroke-width="2"/>
-        <circle class="av-bl" cx="0" cy="5" r="2.5" fill="{CP_RED}" filter="url(#glow-neon)"/>
-        <circle class="av-bl" cx="28" cy="6" r="2.5" fill="{CP_CYAN}" filter="url(#glow-neon)"/>
+      <g transform="translate(0, 110)">
+        <polygon points="0,4 22,0 30,6 20,10 0,7" fill="{CP_RED}" opacity="0.95"/>
+        <polygon points="8,2 16,0 18,4 10,4" fill="{CP_YELLOW}"/>
+        <line x1="30" y1="6" x2="70" y2="12" stroke="{CP_CYAN}" stroke-opacity="0.4" stroke-width="2.5"/>
+        <circle class="av-bl" cx="0" cy="5" r="2.8" fill="{CP_RED}" filter="url(#glow-neon)"/>
+        <circle class="av-bl" cx="30" cy="6" r="2.8" fill="{CP_CYAN}" filter="url(#glow-neon)"/>
+      </g>
+    </g>
+
+    <!-- Second Flying Night City Police AV (Cruising right to left) -->
+    <g class="av-craft-back">
+      <g transform="translate(0, 165)">
+        <polygon points="26,4 4,0 0,6 10,10 26,7" fill="{CP_CYAN}" opacity="0.85"/>
+        <line x1="0" y1="6" x2="-35" y2="12" stroke="{CP_YELLOW}" stroke-opacity="0.35" stroke-width="2"/>
+        <circle class="av-bl" cx="26" cy="5" r="2.2" fill="{CP_CYAN}" filter="url(#glow-neon)"/>
+        <circle class="av-bl" cx="0" cy="6" r="2.2" fill="{CP_RED}" filter="url(#glow-neon)"/>
       </g>
     </g>
 
     <!-- Skyline Telemetry Box (Top Right) -->
     <g transform="translate({FR-20}, 245)" text-anchor="end">
-      <rect x="-240" y="-18" width="240" height="74" fill="{CP_BLACK}" fill-opacity="0.65" stroke="{CP_CYAN}" stroke-opacity="0.35" stroke-width="1"/>
+      <rect x="-240" y="-18" width="240" height="74" fill="{CP_BLACK}" fill-opacity="0.75" stroke="{CP_CYAN}" stroke-opacity="0.4" stroke-width="1.2"/>
       <text x="-12" y="4" font-size="11" class="fg">ANNUAL COMMITS: <tspan class="yw" font-weight="800">{total_contribs}</tspan></text>
       <text x="-12" y="24" font-size="11" class="fg">SECTOR: <tspan class="cy">WATSON / CORPO PLAZA</tspan></text>
-      <text x="-12" y="44" font-size="10" class="dim">GRID: 53 WEEKS ISOMETRIC MESH</text>
+      <text x="-12" y="44" font-size="10" class="dim">MAPPED: 53 WEEKS ISOMETRIC SKYLINE</text>
     </g>
 
-    <!-- Volumetric Ground Cyber-Fog -->
-    <rect x="{FL}" y="360" width="{FR-FL}" height="280" fill="url(#cyber-fog)" pointer-events="none"/>
+    <!-- Volumetric Ground Cyber-Fog & Street Reflections -->
+    <rect x="{FL}" y="350" width="{FR-FL}" height="290" fill="url(#cyber-fog)" pointer-events="none"/>
 
     <!-- Rendered 3D Skyline Buildings & Features -->
     <g>
       {"".join(shapes)}
-      {"".join(signs)}
+      {"".join(skybridges)}
+      {"".join(holograms)}
       {"".join(beacons)}
     </g>
 
@@ -640,18 +693,14 @@ def main():
     (ASSETS_DIR / "links.svg").write_text(links_svg)
     (ASSETS_DIR / "footer.svg").write_text(footer_svg)
 
-    readme_content = f"""<div align="center">
-
-<p align="center">
-  <img src="./assets/header.svg" width="100%" align="top" alt="PALPARD Netrunner Cyberdeck Header"><br>
-  <img src="./assets/telemetry.svg" width="100%" align="top" alt="Cyberdeck Telemetry"><br>
-  <img src="./assets/city.svg" width="100%" align="top" alt="Night City Skyline"><br>
-  <img src="./assets/arsenal.svg" width="100%" align="top" alt="Netrunner Quickhacks and Arsenal"><br>
-  <a href="https://t.me/PALPARD"><img src="./assets/links.svg" width="100%" align="top" alt="Neural Uplinks and Featured Deployment"></a><br>
-  <img src="./assets/footer.svg" width="100%" align="top" alt="Cyberdeck Footer">
+    readme_content = f"""<p align="center">
+  <img src="./assets/header.svg?v=3" width="100%" align="top" alt="PALPARD Netrunner Cyberdeck Header">
+  <img src="./assets/telemetry.svg?v=3" width="100%" align="top" alt="Cyberdeck Telemetry">
+  <img src="./assets/city.svg?v=3" width="100%" align="top" alt="Night City Skyline">
+  <img src="./assets/arsenal.svg?v=3" width="100%" align="top" alt="Netrunner Quickhacks and Arsenal">
+  <a href="https://t.me/PALPARD"><img src="./assets/links.svg?v=3" width="100%" align="top" alt="Neural Uplinks and Featured Deployment"></a>
+  <img src="./assets/footer.svg?v=3" width="100%" align="top" alt="Cyberdeck Footer">
 </p>
-
-</div>
 """
     (HERE / "README.md").write_text(readme_content)
     print("All Cyberpunk 2077 slices and README generated successfully!")
