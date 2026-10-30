@@ -30,17 +30,17 @@ text {
   97% { transform: translate(-2px, 0); }
 }
 @keyframes fly-av {
-  from { transform: translate(-44px, 0); }
-  to { transform: translate(924px, -35px); }
+  from { transform: translate(-54px, 0); }
+  to { transform: translate(934px, -40px); }
 }
-@keyframes av-beacon { 0%, 90%, 100% { opacity: 0; } 92%, 98% { opacity: 1; } }
+@keyframes av-beacon { 0%, 88%, 100% { opacity: 0; } 90%, 96% { opacity: 1; } }
 @keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
 
 .cursor { animation: blink 1s step-end infinite; }
 .dot-live { animation: pulse 1.8s ease-in-out infinite; }
 .glitch-yw { animation: glitch-yw 5s linear infinite; }
 .glitch-cy { animation: glitch-cy 5s linear infinite; }
-.av-craft { animation: fly-av 22s linear infinite; }
+.av-craft { animation: fly-av 24s linear infinite; }
 .av-bl { animation: av-beacon 1.2s infinite; }
 
   </style>
@@ -50,7 +50,7 @@ text {
   <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00F0FF" stroke-opacity="0.06" stroke-width="1"/>
 </pattern>
 <pattern id="crt-scan" width="4" height="4" patternUnits="userSpaceOnUse">
-  <rect width="4" height="1" fill="#000000" fill-opacity="0.25"/>
+  <rect width="4" height="1" fill="#000000" fill-opacity="0.22"/>
 </pattern>
 <filter id="glow-neon" x="-50%" y="-50%" width="200%" height="200%">
   <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
@@ -62,6 +62,11 @@ text {
 <filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
   <feGaussianBlur stdDeviation="3"/>
 </filter>
+<linearGradient id="cyber-fog" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#00F0FF" stop-opacity="0"/>
+  <stop offset="60%" stop-color="#00F0FF" stop-opacity="0.05"/>
+  <stop offset="100%" stop-color="#FF003C" stop-opacity="0.12"/>
+</linearGradient>
 
   </defs>
 
@@ -70,7 +75,7 @@ text {
   <rect x="16" y="0" width="848" height="64" fill="url(#grid40)"/>
 
   <!-- Neon Frame Rails -->
-  <path d="M 16 -40 V 64 M 864 -40 V 64 M 16 64 H 864" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.45" filter="url(#glow-soft)"/>
+  <path d="M 16 -40 V 64 M 864 -40 V 64 M 16 64 H 864" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.4" filter="url(#glow-soft)"/>
   <path d="M 16 0 V 64 M 864 0 V 64 M 16 64 H 864" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-opacity="0.85"/>
   
         <path d="M 10 48 V 70 H 32" fill="none" stroke="#00F0FF" stroke-width="2"/>

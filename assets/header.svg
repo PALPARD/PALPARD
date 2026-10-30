@@ -30,17 +30,17 @@ text {
   97% { transform: translate(-2px, 0); }
 }
 @keyframes fly-av {
-  from { transform: translate(-44px, 0); }
-  to { transform: translate(924px, -35px); }
+  from { transform: translate(-54px, 0); }
+  to { transform: translate(934px, -40px); }
 }
-@keyframes av-beacon { 0%, 90%, 100% { opacity: 0; } 92%, 98% { opacity: 1; } }
+@keyframes av-beacon { 0%, 88%, 100% { opacity: 0; } 90%, 96% { opacity: 1; } }
 @keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
 
 .cursor { animation: blink 1s step-end infinite; }
 .dot-live { animation: pulse 1.8s ease-in-out infinite; }
 .glitch-yw { animation: glitch-yw 5s linear infinite; }
 .glitch-cy { animation: glitch-cy 5s linear infinite; }
-.av-craft { animation: fly-av 22s linear infinite; }
+.av-craft { animation: fly-av 24s linear infinite; }
 .av-bl { animation: av-beacon 1.2s infinite; }
 
   </style>
@@ -50,7 +50,7 @@ text {
   <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00F0FF" stroke-opacity="0.06" stroke-width="1"/>
 </pattern>
 <pattern id="crt-scan" width="4" height="4" patternUnits="userSpaceOnUse">
-  <rect width="4" height="1" fill="#000000" fill-opacity="0.25"/>
+  <rect width="4" height="1" fill="#000000" fill-opacity="0.22"/>
 </pattern>
 <filter id="glow-neon" x="-50%" y="-50%" width="200%" height="200%">
   <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
@@ -62,6 +62,11 @@ text {
 <filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
   <feGaussianBlur stdDeviation="3"/>
 </filter>
+<linearGradient id="cyber-fog" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#00F0FF" stop-opacity="0"/>
+  <stop offset="60%" stop-color="#00F0FF" stop-opacity="0.05"/>
+  <stop offset="100%" stop-color="#FF003C" stop-opacity="0.12"/>
+</linearGradient>
 
   </defs>
 
@@ -70,7 +75,7 @@ text {
   <rect x="16" y="16" width="848" height="344" fill="url(#grid40)"/>
 
   <!-- Neon Frame Rails -->
-  <path d="M 16 16 V 400 M 864 16 V 400 M 16 16 H 864" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.45" filter="url(#glow-soft)"/>
+  <path d="M 16 16 V 400 M 864 16 V 400 M 16 16 H 864" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.4" filter="url(#glow-soft)"/>
   <path d="M 16 16 V 360 M 864 16 V 360 M 16 16 H 864" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-opacity="0.85"/>
   
         <path d="M 10 32 V 10 H 32" fill="none" stroke="#FCEE0A" stroke-width="2"/>
@@ -81,22 +86,32 @@ text {
 
   <!-- Body Content -->
   
-    <!-- Top Cyberpunk Status Bar -->
+    <!-- Top Cyberpunk Status Bar Background -->
     <rect x="16" y="16" width="848" height="32" fill="#00F0FF" fill-opacity="0.12"/>
     <line x1="16" y1="48" x2="864" y2="48" stroke="#00F0FF" stroke-opacity="0.5" stroke-width="1.5"/>
-    <text x="34" y="37" font-size="11" font-weight="700" letter-spacing="1" fill="#00F0FF">SYS://MILITECH.CYBERDECK // NODE:PALPARD // NIGHT CITY</text>
-    <circle class="dot-live" cx="441.0" cy="32" r="4.5" fill="#FCEE0A" filter="url(#glow-neon)"/>
-    <text x="846" y="37" font-size="11" font-weight="700" letter-spacing="1" text-anchor="end" fill="#FCEE0A">BREACH: ACTIVE // RAM: 16/16 // ICE: BYPASSED</text>
+
+    <!-- Left Segment: Fixed at x=34, max width ~220px -->
+    <text x="34" y="37" font-size="11" font-weight="700" letter-spacing="1" fill="#00F0FF">SYS://CYBERDECK // NODE:PALPARD</text>
+
+    <!-- Center Segment: Fixed at x=440 (Center Badge), perfectly isolated -->
+    <g transform="translate(440, 32)">
+      <rect x="-65" y="-10" width="130" height="20" rx="3" fill="#00F0FF" fill-opacity="0.12" stroke="#00F0FF" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="0" y="4" font-size="10" font-weight="800" letter-spacing="2" text-anchor="middle" fill="#00F0FF">NIGHT CITY</text>
+    </g>
+
+    <!-- Right Segment: Right-aligned ending at x=846, plenty of buffer room -->
+    <circle class="dot-live" cx="644" cy="32" r="4" fill="#00FF66" filter="url(#glow-neon)"/>
+    <text x="846" y="37" font-size="11" font-weight="700" letter-spacing="1" text-anchor="end" fill="#FCEE0A">RAM: 16/16 // ICE: BYPASSED</text>
 
     <!-- Angled Cyberpunk Tech Accent -->
-    <polygon points="34,48 50,64 196,64 212,48" fill="#FCEE0A" fill-opacity="0.2"/>
+    <polygon points="34,48 50,64 196,64 212,48" fill="#FCEE0A" fill-opacity="0.25"/>
     <text x="54" y="60" font-size="9" font-weight="800" letter-spacing="2" fill="#FCEE0A">NETRUNNER CONSOLE v3.2</text>
 
     <!-- Terminal Command Line Prompt -->
     <text x="52" y="100" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> whoami --status</text>
 
     <!-- Chromatic Aberration Glitch Title: PALPARD -->
-    <g transform="translate(52, 168)" font-weight="900" letter-spacing="3" style="font-size: 58px;">
+    <g transform="translate(52, 168)" font-weight="900" letter-spacing="4" style="font-size: 54px;">
       <!-- Crimson Shadow Layer -->
       <g class="glitch-cy">
         <text x="3" y="0" fill="#FF003C" opacity="0.85">PALPARD</text>
@@ -110,11 +125,11 @@ text {
       <text x="0" y="0" fill="#FCEE0A">PALPARD</text>
     </g>
 
-    <!-- Edgerunners Style Status & Operator Specs -->
+    <!-- Operator Specs lines with clean spacing -->
     <g transform="translate(52, 208)">
       <text x="0" y="0" class="fg"><tspan class="yw">&gt;&gt; OPERATOR:</tspan> TAHA <tspan class="dim">//</tspan> <tspan class="cy">PALPARD</tspan></text>
-      <text x="0" y="24" class="fg"><tspan class="yw">&gt;&gt; CLASS:</tspan> SECURITY RESEARCHER &amp; BUG BOUNTY HUNTER</text>
-      <text x="0" y="48" class="fg"><tspan class="yw">&gt;&gt; PROTOCOL:</tspan> WEB APP SECURITY · RECON ARSENAL · BUSINESS LOGIC HUNTING</text>
+      <text x="0" y="24" class="fg"><tspan class="yw">&gt;&gt; CLASS:</tspan> SECURITY RESEARCHER &amp; BUG BOUNTY SPECIALIST</text>
+      <text x="0" y="48" class="fg"><tspan class="yw">&gt;&gt; SPECIALIZATION:</tspan> IDOR · BUSINESS LOGIC · SSRF · RECON AUTOMATION</text>
       <text x="0" y="72" class="fg"><tspan class="yw">&gt;&gt; CYBERWARE:</tspan> MILITECH &quot;SANDEVISTAN&quot; MK.IV <tspan class="dim">//</tspan> ARASAKA OSINT DECK</text>
     </g>
 
