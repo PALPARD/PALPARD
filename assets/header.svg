@@ -102,21 +102,15 @@ text {
 
     <!-- Pod 1 (Left): Terminal Subsystem Node -->
     <g transform="translate(28, 21)">
-      <rect x="0" y="0" width="230" height="24" rx="2" fill="#00F0FF" fill-opacity="0.1" stroke="#00F0FF" stroke-opacity="0.4"/>
+      <rect x="0" y="0" width="265" height="24" rx="2" fill="#00F0FF" fill-opacity="0.1" stroke="#00F0FF" stroke-opacity="0.4"/>
       <circle class="dot-live" cx="12" cy="12" r="3.5" fill="#00FF66" filter="url(#glow-neon)"/>
       <text x="24" y="16" font-size="10.5" font-weight="700" letter-spacing="1" fill="#00F0FF">SYS://CYBERDECK · NODE:PALPARD</text>
     </g>
 
-    <!-- Pod 2 (Center): Night City Location Badge -->
-    <g transform="translate(440, 21)">
-      <rect x="-95" y="0" width="190" height="24" rx="2" fill="#FCEE0A" fill-opacity="0.1" stroke="#FCEE0A" stroke-opacity="0.4"/>
-      <text x="0" y="16" font-size="10.5" font-weight="800" letter-spacing="2" text-anchor="middle" fill="#FCEE0A">[ NIGHT CITY · SECTOR 04 ]</text>
-    </g>
-
-    <!-- Pod 3 (Right): Hardware Telemetry & ICE Status -->
-    <g transform="translate(622, 21)">
-      <rect x="0" y="0" width="230" height="24" rx="2" fill="#00F0FF" fill-opacity="0.1" stroke="#00F0FF" stroke-opacity="0.4"/>
-      <text x="115" y="16" font-size="10.5" font-weight="700" letter-spacing="1" text-anchor="middle" fill="#00F0FF">RAM: 16/16 // ICE: BYPASSED</text>
+    <!-- Pod 2 (Right): Hardware Telemetry & ICE Status -->
+    <g transform="translate(610, 21)">
+      <rect x="0" y="0" width="242" height="24" rx="2" fill="#00F0FF" fill-opacity="0.1" stroke="#00F0FF" stroke-opacity="0.4"/>
+      <text x="121" y="16" font-size="10.5" font-weight="700" letter-spacing="1" text-anchor="middle" fill="#00F0FF">RAM: 16/16 // ICE: BYPASSED</text>
     </g>
 
     <!-- Angled Cyberpunk Tech Accent Badge -->

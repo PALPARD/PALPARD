@@ -226,10 +226,10 @@ def wrap_slice(h, body_content, *, title, desc, top=False, bottom=False):
 def render_header():
     h = 360
 
-    # 3 Separate, Non-Overlapping HUD Pods:
-    # Pod 1: Left (x=28..258, w=230)
-    # Pod 2: Center (x=345..535, w=190, center at 440) -> 87px gap!
-    # Pod 3: Right (x=622..852, w=230) -> 87px gap!
+    # Two Distinct, Non-Overlapping Symmetrical HUD Pods:
+    # Pod 1: Left (x=28..290, w=262)
+    # Huge 310px gap in between!
+    # Pod 2: Right (x=602..854, w=252)
     body = f"""
     <!-- Top Cyberpunk Status Bar Strip -->
     <rect x="{FL}" y="{M}" width="{FR-FL}" height="34" fill="{CP_BLACK}" fill-opacity="0.75"/>
@@ -237,21 +237,15 @@ def render_header():
 
     <!-- Pod 1 (Left): Terminal Subsystem Node -->
     <g transform="translate({FL+12}, {M+5})">
-      <rect x="0" y="0" width="230" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
+      <rect x="0" y="0" width="265" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
       <circle class="dot-live" cx="12" cy="12" r="3.5" fill="{CP_GREEN}" filter="url(#glow-neon)"/>
       <text x="24" y="16" font-size="10.5" font-weight="700" letter-spacing="1" fill="{CP_CYAN}">SYS://CYBERDECK · NODE:PALPARD</text>
     </g>
 
-    <!-- Pod 2 (Center): Night City Location Badge -->
-    <g transform="translate(440, {M+5})">
-      <rect x="-95" y="0" width="190" height="24" rx="2" fill="{CP_YELLOW}" fill-opacity="0.1" stroke="{CP_YELLOW}" stroke-opacity="0.4"/>
-      <text x="0" y="16" font-size="10.5" font-weight="800" letter-spacing="2" text-anchor="middle" fill="{CP_YELLOW}">[ NIGHT CITY · SECTOR 04 ]</text>
-    </g>
-
-    <!-- Pod 3 (Right): Hardware Telemetry & ICE Status -->
-    <g transform="translate({FR-242}, {M+5})">
-      <rect x="0" y="0" width="230" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
-      <text x="115" y="16" font-size="10.5" font-weight="700" letter-spacing="1" text-anchor="middle" fill="{CP_CYAN}">RAM: 16/16 // ICE: BYPASSED</text>
+    <!-- Pod 2 (Right): Hardware Telemetry & ICE Status -->
+    <g transform="translate({FR-254}, {M+5})">
+      <rect x="0" y="0" width="242" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
+      <text x="121" y="16" font-size="10.5" font-weight="700" letter-spacing="1" text-anchor="middle" fill="{CP_CYAN}">RAM: 16/16 // ICE: BYPASSED</text>
     </g>
 
     <!-- Angled Cyberpunk Tech Accent Badge -->
@@ -694,12 +688,12 @@ def main():
     (ASSETS_DIR / "footer.svg").write_text(footer_svg)
 
     readme_content = f"""<p align="center">
-  <img src="./assets/header.svg?v=3" width="100%" align="top" alt="PALPARD Netrunner Cyberdeck Header">
-  <img src="./assets/telemetry.svg?v=3" width="100%" align="top" alt="Cyberdeck Telemetry">
-  <img src="./assets/city.svg?v=3" width="100%" align="top" alt="Night City Skyline">
-  <img src="./assets/arsenal.svg?v=3" width="100%" align="top" alt="Netrunner Quickhacks and Arsenal">
-  <a href="https://t.me/PALPARD"><img src="./assets/links.svg?v=3" width="100%" align="top" alt="Neural Uplinks and Featured Deployment"></a>
-  <img src="./assets/footer.svg?v=3" width="100%" align="top" alt="Cyberdeck Footer">
+  <img src="./assets/header.svg?v=4" width="100%" align="top" alt="PALPARD Netrunner Cyberdeck Header">
+  <img src="./assets/telemetry.svg?v=4" width="100%" align="top" alt="Cyberdeck Telemetry">
+  <img src="./assets/city.svg?v=4" width="100%" align="top" alt="Night City Skyline">
+  <img src="./assets/arsenal.svg?v=4" width="100%" align="top" alt="Netrunner Quickhacks and Arsenal">
+  <a href="https://t.me/PALPARD"><img src="./assets/links.svg?v=4" width="100%" align="top" alt="Neural Uplinks and Featured Deployment"></a>
+  <img src="./assets/footer.svg?v=4" width="100%" align="top" alt="Cyberdeck Footer">
 </p>
 """
     (HERE / "README.md").write_text(readme_content)
