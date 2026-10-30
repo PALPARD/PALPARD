@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="80" viewBox="0 0 880 80" role="img">
+  <title>End of Cyberdeck Console</title>
+  <desc>Console closed</desc>
+  <style>
+    
+text {
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+.dim { fill: #526075; }
+.fg { fill: #D6DEEB; }
+.cy { fill: #00F0FF; }
+.yw { fill: #FCEE0A; }
+.rd { fill: #FF003C; }
+.gr { fill: #00FF66; }
+.wh { fill: #FFFFFF; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes glitch-yw {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(4px, -1px); }
+  95% { transform: translate(-3px, 2px); }
+  97% { transform: translate(2px, 0); }
+}
+@keyframes glitch-cy {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(-4px, 1px); }
+  95% { transform: translate(3px, -2px); }
+  97% { transform: translate(-2px, 0); }
+}
+@keyframes fly-av {
+  from { transform: translate(-44px, 0); }
+  to { transform: translate(924px, -35px); }
+}
+@keyframes av-beacon { 0%, 90%, 100% { opacity: 0; } 92%, 98% { opacity: 1; } }
+@keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
+
+.cursor { animation: blink 1s step-end infinite; }
+.dot-live { animation: pulse 1.8s ease-in-out infinite; }
+.glitch-yw { animation: glitch-yw 5s linear infinite; }
+.glitch-cy { animation: glitch-cy 5s linear infinite; }
+.av-craft { animation: fly-av 22s linear infinite; }
+.av-bl { animation: av-beacon 1.2s infinite; }
+
+  </style>
+  <defs>
+    
+<pattern id="grid40" width="40" height="40" patternUnits="userSpaceOnUse">
+  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00F0FF" stroke-opacity="0.06" stroke-width="1"/>
+</pattern>
+<pattern id="crt-scan" width="4" height="4" patternUnits="userSpaceOnUse">
+  <rect width="4" height="1" fill="#000000" fill-opacity="0.25"/>
+</pattern>
+<filter id="glow-neon" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+  <feMerge>
+    <feMergeNode in="blur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
+<filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="3"/>
+</filter>
+
+  </defs>
+
+  <!-- Background Base & 40px Alignment Grid -->
+  <rect x="16" y="0" width="848" height="64" fill="#0B0F19"/>
+  <rect x="16" y="0" width="848" height="64" fill="url(#grid40)"/>
+
+  <!-- Neon Frame Rails -->
+  <path d="M 16 -40 V 64 M 864 -40 V 64 M 16 64 H 864" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.45" filter="url(#glow-soft)"/>
+  <path d="M 16 0 V 64 M 864 0 V 64 M 16 64 H 864" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-opacity="0.85"/>
+  
+        <path d="M 10 48 V 70 H 32" fill="none" stroke="#00F0FF" stroke-width="2"/>
+        <path d="M 848 70 H 870 V 48" fill="none" stroke="#00F0FF" stroke-width="2"/>
+        <rect x="36" y="61" width="40" height="6" fill="#00F0FF"/>
+        <rect x="804" y="61" width="40" height="6" fill="#00F0FF"/>
+        
+
+  <!-- Body Content -->
+  
+    <g transform="translate(52, 34)">
+      <text x="0" y="0" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> jack_out --force --clean</text>
+      <text x="0" y="24" class="dim">neural link severed. node <tspan class="yw">PALPARD</tspan> entered sleep mode. <tspan class="cy">// [FLATLINE: FALSE]</tspan></text>
+    </g>
+    
+</svg>

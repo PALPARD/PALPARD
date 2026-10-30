@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="160" viewBox="0 0 880 160" role="img">
+  <title>Neural Uplinks</title>
+  <desc>Communication ports and repositories</desc>
+  <style>
+    
+text {
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+.dim { fill: #526075; }
+.fg { fill: #D6DEEB; }
+.cy { fill: #00F0FF; }
+.yw { fill: #FCEE0A; }
+.rd { fill: #FF003C; }
+.gr { fill: #00FF66; }
+.wh { fill: #FFFFFF; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes glitch-yw {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(4px, -1px); }
+  95% { transform: translate(-3px, 2px); }
+  97% { transform: translate(2px, 0); }
+}
+@keyframes glitch-cy {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(-4px, 1px); }
+  95% { transform: translate(3px, -2px); }
+  97% { transform: translate(-2px, 0); }
+}
+@keyframes fly-av {
+  from { transform: translate(-44px, 0); }
+  to { transform: translate(924px, -35px); }
+}
+@keyframes av-beacon { 0%, 90%, 100% { opacity: 0; } 92%, 98% { opacity: 1; } }
+@keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
+
+.cursor { animation: blink 1s step-end infinite; }
+.dot-live { animation: pulse 1.8s ease-in-out infinite; }
+.glitch-yw { animation: glitch-yw 5s linear infinite; }
+.glitch-cy { animation: glitch-cy 5s linear infinite; }
+.av-craft { animation: fly-av 22s linear infinite; }
+.av-bl { animation: av-beacon 1.2s infinite; }
+
+  </style>
+  <defs>
+    
+<pattern id="grid40" width="40" height="40" patternUnits="userSpaceOnUse">
+  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00F0FF" stroke-opacity="0.06" stroke-width="1"/>
+</pattern>
+<pattern id="crt-scan" width="4" height="4" patternUnits="userSpaceOnUse">
+  <rect width="4" height="1" fill="#000000" fill-opacity="0.25"/>
+</pattern>
+<filter id="glow-neon" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+  <feMerge>
+    <feMergeNode in="blur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
+<filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="3"/>
+</filter>
+
+  </defs>
+
+  <!-- Background Base & 40px Alignment Grid -->
+  <rect x="16" y="0" width="848" height="160" fill="#0B0F19"/>
+  <rect x="16" y="0" width="848" height="160" fill="url(#grid40)"/>
+
+  <!-- Neon Frame Rails -->
+  <path d="M 16 -40 V 200 M 864 -40 V 200" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.45" filter="url(#glow-soft)"/>
+  <path d="M 16 0 V 160 M 864 0 V 160" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-opacity="0.85"/>
+  
+
+  <!-- Body Content -->
+  
+    <!-- Terminal Heading -->
+    <g transform="translate(52, 34)">
+      <text x="0" y="0" class="yw" font-weight="800">&gt;&gt; [05 // NEURAL UPLINKS &amp; FEATURED DEPLOYMENT]</text>
+    </g>
+
+    <!-- Comms Link -->
+    <rect x="30" y="52" width="406.0" height="92" fill="#070A0F" fill-opacity="0.7" stroke="#00F0FF" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="46" y="78" font-size="12" font-weight="800" fill="#00F0FF">[COMMUNICATION // ENCRYPTED COMMS]</text>
+    <text x="46" y="104" font-size="13" class="fg">TELEGRAM: <tspan class="yw" font-weight="700">@PALPARD</tspan></text>
+    <text x="46" y="126" font-size="11" class="dim">DIRECT NEURAL RELAY · ID: 5551619179</text>
+
+    <!-- Project Link -->
+    <rect x="444.0" y="52" width="406.0" height="92" fill="#070A0F" fill-opacity="0.7" stroke="#FCEE0A" stroke-opacity="0.6" stroke-width="1.5"/>
+    <text x="460.0" y="78" font-size="12" font-weight="800" fill="#FCEE0A">[FEATURED CODEBASE // LIVE REPOSITORY]</text>
+    <text x="460.0" y="104" font-size="13" class="fg">REPO: <tspan class="cy" font-weight="700">esm-famil-multiplayer-online</tspan></text>
+    <text x="460.0" y="126" font-size="11" class="dim">REALTIME PARTY GAME · TACTILE ARCADE UI</text>
+    
+</svg>

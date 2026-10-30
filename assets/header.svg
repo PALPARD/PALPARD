@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" role="img">
+  <title>PALPARD Netrunner Cyberdeck</title>
+  <desc>Cyberpunk console header for PALPARD</desc>
+  <style>
+    
+text {
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+.dim { fill: #526075; }
+.fg { fill: #D6DEEB; }
+.cy { fill: #00F0FF; }
+.yw { fill: #FCEE0A; }
+.rd { fill: #FF003C; }
+.gr { fill: #00FF66; }
+.wh { fill: #FFFFFF; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes glitch-yw {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(4px, -1px); }
+  95% { transform: translate(-3px, 2px); }
+  97% { transform: translate(2px, 0); }
+}
+@keyframes glitch-cy {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(-4px, 1px); }
+  95% { transform: translate(3px, -2px); }
+  97% { transform: translate(-2px, 0); }
+}
+@keyframes fly-av {
+  from { transform: translate(-44px, 0); }
+  to { transform: translate(924px, -35px); }
+}
+@keyframes av-beacon { 0%, 90%, 100% { opacity: 0; } 92%, 98% { opacity: 1; } }
+@keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
+
+.cursor { animation: blink 1s step-end infinite; }
+.dot-live { animation: pulse 1.8s ease-in-out infinite; }
+.glitch-yw { animation: glitch-yw 5s linear infinite; }
+.glitch-cy { animation: glitch-cy 5s linear infinite; }
+.av-craft { animation: fly-av 22s linear infinite; }
+.av-bl { animation: av-beacon 1.2s infinite; }
+
+  </style>
+  <defs>
+    
+<pattern id="grid40" width="40" height="40" patternUnits="userSpaceOnUse">
+  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00F0FF" stroke-opacity="0.06" stroke-width="1"/>
+</pattern>
+<pattern id="crt-scan" width="4" height="4" patternUnits="userSpaceOnUse">
+  <rect width="4" height="1" fill="#000000" fill-opacity="0.25"/>
+</pattern>
+<filter id="glow-neon" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+  <feMerge>
+    <feMergeNode in="blur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
+<filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="3"/>
+</filter>
+
+  </defs>
+
+  <!-- Background Base & 40px Alignment Grid -->
+  <rect x="16" y="16" width="848" height="344" fill="#0B0F19"/>
+  <rect x="16" y="16" width="848" height="344" fill="url(#grid40)"/>
+
+  <!-- Neon Frame Rails -->
+  <path d="M 16 16 V 400 M 864 16 V 400 M 16 16 H 864" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.45" filter="url(#glow-soft)"/>
+  <path d="M 16 16 V 360 M 864 16 V 360 M 16 16 H 864" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-opacity="0.85"/>
+  
+        <path d="M 10 32 V 10 H 32" fill="none" stroke="#FCEE0A" stroke-width="2"/>
+        <path d="M 848 10 H 870 V 32" fill="none" stroke="#FCEE0A" stroke-width="2"/>
+        <rect x="36" y="13" width="30" height="6" fill="#FCEE0A"/>
+        <rect x="814" y="13" width="30" height="6" fill="#FCEE0A"/>
+        
+
+  <!-- Body Content -->
+  
+    <!-- Top Cyberpunk Status Bar -->
+    <rect x="16" y="16" width="848" height="32" fill="#00F0FF" fill-opacity="0.12"/>
+    <line x1="16" y1="48" x2="864" y2="48" stroke="#00F0FF" stroke-opacity="0.5" stroke-width="1.5"/>
+    <text x="34" y="37" font-size="11" font-weight="700" letter-spacing="1" fill="#00F0FF">SYS://MILITECH.CYBERDECK // NODE:PALPARD // NIGHT CITY</text>
+    <circle class="dot-live" cx="441.0" cy="32" r="4.5" fill="#FCEE0A" filter="url(#glow-neon)"/>
+    <text x="846" y="37" font-size="11" font-weight="700" letter-spacing="1" text-anchor="end" fill="#FCEE0A">BREACH: ACTIVE // RAM: 16/16 // ICE: BYPASSED</text>
+
+    <!-- Angled Cyberpunk Tech Accent -->
+    <polygon points="34,48 50,64 196,64 212,48" fill="#FCEE0A" fill-opacity="0.2"/>
+    <text x="54" y="60" font-size="9" font-weight="800" letter-spacing="2" fill="#FCEE0A">NETRUNNER CONSOLE v3.2</text>
+
+    <!-- Terminal Command Line Prompt -->
+    <text x="52" y="100" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> whoami --status</text>
+
+    <!-- Chromatic Aberration Glitch Title: PALPARD -->
+    <g transform="translate(52, 168)" font-weight="900" letter-spacing="3" style="font-size: 58px;">
+      <!-- Crimson Shadow Layer -->
+      <g class="glitch-cy">
+        <text x="3" y="0" fill="#FF003C" opacity="0.85">PALPARD</text>
+      </g>
+      <!-- Cyan Shadow Layer -->
+      <g class="glitch-yw">
+        <text x="-3" y="0" fill="#00F0FF" opacity="0.85">PALPARD</text>
+      </g>
+      <!-- Main Signature Cyberpunk Yellow -->
+      <text x="0" y="0" fill="#FCEE0A" filter="url(#glow-soft)">PALPARD</text>
+      <text x="0" y="0" fill="#FCEE0A">PALPARD</text>
+    </g>
+
+    <!-- Edgerunners Style Status & Operator Specs -->
+    <g transform="translate(52, 208)">
+      <text x="0" y="0" class="fg"><tspan class="yw">&gt;&gt; OPERATOR:</tspan> TAHA <tspan class="dim">//</tspan> <tspan class="cy">PALPARD</tspan></text>
+      <text x="0" y="24" class="fg"><tspan class="yw">&gt;&gt; CLASS:</tspan> SECURITY RESEARCHER &amp; BUG BOUNTY HUNTER</text>
+      <text x="0" y="48" class="fg"><tspan class="yw">&gt;&gt; PROTOCOL:</tspan> WEB APP SECURITY · RECON ARSENAL · BUSINESS LOGIC HUNTING</text>
+      <text x="0" y="72" class="fg"><tspan class="yw">&gt;&gt; CYBERWARE:</tspan> MILITECH &quot;SANDEVISTAN&quot; MK.IV <tspan class="dim">//</tspan> ARASAKA OSINT DECK</text>
+    </g>
+
+    <!-- Blinking Prompt -->
+    <g transform="translate(52, 318)">
+      <text x="0" y="0" class="rd">[netrunner@night-city]$</text>
+      <rect class="cursor" x="180" y="-13" width="10" height="17" fill="#FCEE0A" filter="url(#glow-neon)"/>
+    </g>
+
+    <!-- CRT Scanline Mask -->
+    <rect x="16" y="49" width="848" height="311" fill="url(#crt-scan)" pointer-events="none"/>
+    
+</svg>

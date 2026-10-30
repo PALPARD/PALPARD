@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="160" viewBox="0 0 880 160" role="img">
+  <title>Cyberdeck Telemetry</title>
+  <desc>System telemetry and status indicators</desc>
+  <style>
+    
+text {
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+  font-size: 14px;
+}
+.dim { fill: #526075; }
+.fg { fill: #D6DEEB; }
+.cy { fill: #00F0FF; }
+.yw { fill: #FCEE0A; }
+.rd { fill: #FF003C; }
+.gr { fill: #00FF66; }
+.wh { fill: #FFFFFF; }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes glitch-yw {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(4px, -1px); }
+  95% { transform: translate(-3px, 2px); }
+  97% { transform: translate(2px, 0); }
+}
+@keyframes glitch-cy {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(-4px, 1px); }
+  95% { transform: translate(3px, -2px); }
+  97% { transform: translate(-2px, 0); }
+}
+@keyframes fly-av {
+  from { transform: translate(-44px, 0); }
+  to { transform: translate(924px, -35px); }
+}
+@keyframes av-beacon { 0%, 90%, 100% { opacity: 0; } 92%, 98% { opacity: 1; } }
+@keyframes scanline { from { transform: translateY(0); } to { transform: translateY(360px); } }
+
+.cursor { animation: blink 1s step-end infinite; }
+.dot-live { animation: pulse 1.8s ease-in-out infinite; }
+.glitch-yw { animation: glitch-yw 5s linear infinite; }
+.glitch-cy { animation: glitch-cy 5s linear infinite; }
+.av-craft { animation: fly-av 22s linear infinite; }
+.av-bl { animation: av-beacon 1.2s infinite; }
+
+  </style>
+  <defs>
+    
+<pattern id="grid40" width="40" height="40" patternUnits="userSpaceOnUse">
+  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#00F0FF" stroke-opacity="0.06" stroke-width="1"/>
+</pattern>
+<pattern id="crt-scan" width="4" height="4" patternUnits="userSpaceOnUse">
+  <rect width="4" height="1" fill="#000000" fill-opacity="0.25"/>
+</pattern>
+<filter id="glow-neon" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+  <feMerge>
+    <feMergeNode in="blur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
+<filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
+  <feGaussianBlur stdDeviation="3"/>
+</filter>
+
+  </defs>
+
+  <!-- Background Base & 40px Alignment Grid -->
+  <rect x="16" y="0" width="848" height="160" fill="#0B0F19"/>
+  <rect x="16" y="0" width="848" height="160" fill="url(#grid40)"/>
+
+  <!-- Neon Frame Rails -->
+  <path d="M 16 -40 V 200 M 864 -40 V 200" fill="none" stroke="#00F0FF" stroke-width="4" stroke-opacity="0.45" filter="url(#glow-soft)"/>
+  <path d="M 16 0 V 160 M 864 0 V 160" fill="none" stroke="#00F0FF" stroke-width="1.8" stroke-opacity="0.85"/>
+  
+
+  <!-- Body Content -->
+  
+    <!-- Box 1: Cyberdeck Telemetry -->
+    <rect x="30" y="20" width="269.3333333333333" height="120" fill="#070A0F" fill-opacity="0.6" stroke="#00F0FF" stroke-opacity="0.4" stroke-width="1.5"/>
+    <rect x="30" y="20" width="269.3333333333333" height="22" fill="#00F0FF" fill-opacity="0.15"/>
+    <text x="40" y="35" font-size="10" font-weight="800" fill="#00F0FF">[01 // NEURAL TELEMETRY]</text>
+    <text x="42" y="62" font-size="12" class="fg">STATUS: <tspan class="gr">100% OPERATIONAL</tspan></text>
+    <text x="42" y="84" font-size="12" class="fg">DAEMON: <tspan class="yw">STRIX RECON v1.5</tspan></text>
+    <text x="42" y="106" font-size="12" class="fg">BUFFER: <tspan class="cy">ENCRYPTED (TLS 1.3)</tspan></text>
+    <text x="42" y="128" font-size="12" class="fg">FIREWALL: <tspan class="rd">BLACK-ICE BYPASS</tspan></text>
+
+    <!-- Box 2: Offensive Security Focus -->
+    <rect x="305.3333333333333" y="20" width="269.3333333333333" height="120" fill="#070A0F" fill-opacity="0.6" stroke="#FCEE0A" stroke-opacity="0.4" stroke-width="1.5"/>
+    <rect x="305.3333333333333" y="20" width="269.3333333333333" height="22" fill="#FCEE0A" fill-opacity="0.15"/>
+    <text x="315.3333333333333" y="35" font-size="10" font-weight="800" fill="#FCEE0A">[02 // HUNTING FOCUS]</text>
+    <text x="317.3333333333333" y="62" font-size="12" class="fg">PRIMARY: <tspan class="yw">IDOR &amp; LOGIC FLAWS</tspan></text>
+    <text x="317.3333333333333" y="84" font-size="12" class="fg">TARGETS: <tspan class="cy">WEB &amp; REST APIS</tspan></text>
+    <text x="317.3333333333333" y="106" font-size="12" class="fg">METHOD: <tspan class="gr">EVIDENCE-BACKED</tspan></text>
+    <text x="317.3333333333333" y="128" font-size="12" class="fg">RATE LIMIT: <tspan class="rd">BYPASS AUDITED</tspan></text>
+
+    <!-- Box 3: System Arsenal -->
+    <rect x="580.6666666666666" y="20" width="269.3333333333333" height="120" fill="#070A0F" fill-opacity="0.6" stroke="#FF003C" stroke-opacity="0.4" stroke-width="1.5"/>
+    <rect x="580.6666666666666" y="20" width="269.3333333333333" height="22" fill="#FF003C" fill-opacity="0.15"/>
+    <text x="590.6666666666666" y="35" font-size="10" font-weight="800" fill="#FF003C">[03 // ENVIRONMENT]</text>
+    <text x="592.6666666666666" y="62" font-size="12" class="fg">OS: <tspan class="cy">KALI LINUX / XFCE</tspan></text>
+    <text x="592.6666666666666" y="84" font-size="12" class="fg">STACK: <tspan class="yw">PYTHON · NODE · BASH</tspan></text>
+    <text x="592.6666666666666" y="106" font-size="12" class="fg">PROXY: <tspan class="gr">BURP SUITE PRO</tspan></text>
+    <text x="592.6666666666666" y="128" font-size="12" class="fg">AI ORCHESTRATION: <tspan class="cy">HERMES AGENT</tspan></text>
+    
+</svg>
