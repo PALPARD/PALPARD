@@ -410,6 +410,7 @@ def render_city(calendar):
     skybridges = []
     holograms = []
     beacons = []
+    labeled_x = []
 
     ROOFS = ["#1A2538", "#0E566E", "#00F0FF", "#FCEE0A", "#FF003C"]
     rng = random.Random(2077)
@@ -496,8 +497,9 @@ def render_city(calendar):
                     w_quad = iso_quad(B, R, u0, du, v0, 4)
                     shapes.append(f'<path d="{w_quad}" fill="{wcolor}" opacity="0.85"/>')
 
-        # Holographic Vertical Neon Signboards on Mega-Towers
-        if bh > 65:
+        # Holographic Vertical Neon Signboards on Mega-Towers (De-duplicated)
+        if bh > 70 and not any(abs(Bu[0] - lx) < 65 for lx in labeled_x):
+            labeled_x.append(Bu[0])
             sign_text = "ARASAKA" if level == 4 else ("PALPARD" if level == 3 else "NETRUNNER")
             sign_color = CP_RED if level == 4 else (CP_YELLOW if level == 3 else CP_CYAN)
             sign_quad = iso_quad(L, B, 0.15, 0.65, bh - 38, 28)
@@ -510,17 +512,6 @@ def render_city(calendar):
         beacons.append(f'<line x1="{Bu[0]}" y1="{Tu[1] - (16 if level >= 3 else 0)}" x2="{spire_top[0]}" y2="{spire_top[1]}" stroke="{CP_CYAN}" stroke-width="1.5"/>')
         beacon_color = CP_RED if level == 4 else CP_YELLOW
         beacons.append(f'<circle class="dot-live" cx="{spire_top[0]}" cy="{spire_top[1]}" r="3" fill="{beacon_color}" filter="url(#glow-neon)"/>')
-
-    # Skybridges connecting nearby towers
-    if len(tall_towers) >= 2:
-        for i in range(len(tall_towers) - 1):
-            t1 = tall_towers[i]
-            t2 = tall_towers[i+1]
-            dist = math.hypot(t1[0] - t2[0], t1[1] - t2[1])
-            if dist < 120:
-                sb_y = min(t1[1] - t1[2] + 40, t2[1] - t2[2] + 40)
-                skybridges.append(f'<line x1="{t1[0]}" y1="{sb_y}" x2="{t2[0]}" y2="{sb_y}" stroke="{CP_CYAN}" stroke-width="4" stroke-opacity="0.8" filter="url(#glow-soft)"/>')
-                skybridges.append(f'<line x1="{t1[0]}" y1="{sb_y}" x2="{t2[0]}" y2="{sb_y}" stroke="#FFFFFF" stroke-width="1.5"/>')
 
     # Night City Sky: Stars, Full Moon with Holographic Target Rings
     stars = []
@@ -571,14 +562,6 @@ def render_city(calendar):
       </g>
     </g>
 
-    <!-- Skyline Telemetry Box (Top Right) -->
-    <g transform="translate({FR-20}, 245)" text-anchor="end">
-      <rect x="-240" y="-18" width="240" height="74" fill="{CP_BLACK}" fill-opacity="0.75" stroke="{CP_CYAN}" stroke-opacity="0.4" stroke-width="1.2"/>
-      <text x="-12" y="4" font-size="11" class="fg">ANNUAL COMMITS: <tspan class="yw" font-weight="800">{total_contribs}</tspan></text>
-      <text x="-12" y="24" font-size="11" class="fg">SECTOR: <tspan class="cy">WATSON / CORPO PLAZA</tspan></text>
-      <text x="-12" y="44" font-size="10" class="dim">MAPPED: 53 WEEKS ISOMETRIC SKYLINE</text>
-    </g>
-
     <!-- Volumetric Ground Cyber-Fog & Street Reflections -->
     <rect x="{FL}" y="350" width="{FR-FL}" height="290" fill="url(#cyber-fog)" pointer-events="none"/>
 
@@ -590,15 +573,15 @@ def render_city(calendar):
       {"".join(beacons)}
     </g>
 
-    <!-- Legend -->
+    <!-- Legend (Clean spacing, zero overlap) -->
     <g transform="translate({X}, 652)">
-      <text x="0" y="0" font-size="11" class="dim">DISTRICT: SLUMS</text>
-      <rect x="105" y="-10" width="12" height="12" fill="#1A2538"/>
-      <rect x="123" y="-10" width="12" height="12" fill="#0E566E"/>
-      <rect x="141" y="-10" width="12" height="12" fill="{CP_CYAN}"/>
-      <rect x="159" y="-10" width="12" height="12" fill="{CP_YELLOW}"/>
-      <rect x="177" y="-10" width="12" height="12" fill="{CP_RED}"/>
-      <text x="200" y="0" font-size="11" class="dim">ARASAKA MEGA-TOWER</text>
+      <text x="0" y="0" dominant-baseline="central" font-size="11" class="dim">DISTRICT: SLUMS</text>
+      <rect x="135" y="-6" width="12" height="12" fill="#1A2538"/>
+      <rect x="153" y="-6" width="12" height="12" fill="#0E566E"/>
+      <rect x="171" y="-6" width="12" height="12" fill="{CP_CYAN}"/>
+      <rect x="189" y="-6" width="12" height="12" fill="{CP_YELLOW}"/>
+      <rect x="207" y="-6" width="12" height="12" fill="{CP_RED}"/>
+      <text x="232" y="0" dominant-baseline="central" font-size="11" class="dim">ARASAKA MEGA-TOWER</text>
     </g>
     """
     return wrap_slice(h, body, title="Night City Skyline", desc="Isometric 3D Night City Skyline built from PALPARD GitHub contributions")
@@ -721,12 +704,12 @@ def main():
     (ASSETS_DIR / "footer.svg").write_text(footer_svg)
 
     readme_content = f"""<p align="center">
-  <img src="./assets/header.svg?v=5" width="100%" align="top" alt="PALPARD Netrunner Cyberdeck Header">
-  <img src="./assets/telemetry.svg?v=5" width="100%" align="top" alt="Cyberdeck Telemetry">
-  <img src="./assets/city.svg?v=5" width="100%" align="top" alt="Night City Skyline">
-  <img src="./assets/arsenal.svg?v=5" width="100%" align="top" alt="Netrunner Quickhacks and Arsenal">
-  <a href="https://t.me/PALPARD"><img src="./assets/links.svg?v=5" width="100%" align="top" alt="Neural Uplinks and Featured Deployment"></a>
-  <img src="./assets/footer.svg?v=5" width="100%" align="top" alt="Cyberdeck Footer">
+  <img src="./assets/header.svg?v=6" width="100%" align="top" alt="PALPARD Netrunner Cyberdeck Header">
+  <img src="./assets/telemetry.svg?v=6" width="100%" align="top" alt="Cyberdeck Telemetry">
+  <img src="./assets/city.svg?v=6" width="100%" align="top" alt="Night City Skyline">
+  <img src="./assets/arsenal.svg?v=6" width="100%" align="top" alt="Netrunner Quickhacks and Arsenal">
+  <a href="https://t.me/PALPARD"><img src="./assets/links.svg?v=6" width="100%" align="top" alt="Neural Uplinks and Featured Deployment"></a>
+  <img src="./assets/footer.svg?v=6" width="100%" align="top" alt="Cyberdeck Footer">
 </p>
 """
     (HERE / "README.md").write_text(readme_content)
