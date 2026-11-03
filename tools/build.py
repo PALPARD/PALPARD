@@ -226,66 +226,99 @@ def wrap_slice(h, body_content, *, title, desc, top=False, bottom=False):
 def render_header():
     h = 360
 
-    # Two Distinct, Non-Overlapping Symmetrical HUD Pods:
-    # Pod 1: Left (x=28..290, w=262)
-    # Huge 310px gap in between!
-    # Pod 2: Right (x=602..854, w=252)
     body = f"""
     <!-- Top Cyberpunk Status Bar Strip -->
-    <rect x="{FL}" y="{M}" width="{FR-FL}" height="34" fill="{CP_BLACK}" fill-opacity="0.75"/>
-    <line x1="{FL}" y1="{M+34}" x2="{FR}" y2="{M+34}" stroke="{CP_CYAN}" stroke-opacity="0.6" stroke-width="1.5"/>
+    <rect x="{FL}" y="{M}" width="{FR-FL}" height="36" fill="{CP_BLACK}" fill-opacity="0.9" stroke="{CP_CYAN}" stroke-opacity="0.3" stroke-width="1"/>
+    <line x1="{FL}" y1="{M+36}" x2="{FR}" y2="{M+36}" stroke="{CP_CYAN}" stroke-opacity="0.75" stroke-width="1.5"/>
 
-    <!-- Pod 1 (Left): Terminal Subsystem Node -->
-    <g transform="translate({FL+12}, {M+5})">
-      <rect x="0" y="0" width="265" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
-      <circle class="dot-live" cx="12" cy="12" r="3.5" fill="{CP_GREEN}" filter="url(#glow-neon)"/>
-      <text x="24" y="16" font-size="10.5" font-weight="700" letter-spacing="1" fill="{CP_CYAN}">SYS://CYBERDECK · NODE:PALPARD</text>
+    <!-- Pod 1 (Left): Terminal Subsystem Node with generous padding -->
+    <g transform="translate({FL+10}, {M+5})">
+      <rect x="0" y="0" width="285" height="26" rx="3" fill="#060912" stroke="{CP_CYAN}" stroke-opacity="0.55" stroke-width="1.2"/>
+      <rect x="0" y="0" width="285" height="26" rx="3" fill="{CP_CYAN}" fill-opacity="0.08"/>
+      <circle class="dot-live" cx="13" cy="13" r="3.5" fill="{CP_GREEN}" filter="url(#glow-neon)"/>
+      <text x="25" y="13" dominant-baseline="central" font-size="10" font-weight="700" letter-spacing="0.8" fill="{CP_CYAN}">SYS://CYBERDECK · NODE:PALPARD</text>
     </g>
+
+    <!-- Center Status Indicator -->
+    <text x="{W//2}" y="{M+18}" dominant-baseline="central" text-anchor="middle" font-size="9" font-weight="700" letter-spacing="2" fill="{CP_DIM}">CONSOLE // ONLINE</text>
 
     <!-- Pod 2 (Right): Hardware Telemetry & ICE Status -->
-    <g transform="translate({FR-254}, {M+5})">
-      <rect x="0" y="0" width="242" height="24" rx="2" fill="{CP_CYAN}" fill-opacity="0.1" stroke="{CP_CYAN}" stroke-opacity="0.4"/>
-      <text x="121" y="16" font-size="10.5" font-weight="700" letter-spacing="1" text-anchor="middle" fill="{CP_CYAN}">RAM: 16/16 // ICE: BYPASSED</text>
+    <g transform="translate({FR-275}, {M+5})">
+      <rect x="0" y="0" width="265" height="26" rx="3" fill="#060912" stroke="{CP_CYAN}" stroke-opacity="0.55" stroke-width="1.2"/>
+      <rect x="0" y="0" width="265" height="26" rx="3" fill="{CP_CYAN}" fill-opacity="0.08"/>
+      <text x="132" y="13" dominant-baseline="central" text-anchor="middle" font-size="10" font-weight="700" letter-spacing="0.8" fill="{CP_CYAN}">RAM: 16/16 // ICE: BYPASSED</text>
     </g>
 
-    <!-- Angled Cyberpunk Tech Accent Badge -->
-    <polygon points="{FL+18},{M+34} {FL+34},{M+50} {FL+180},{M+50} {FL+196},{M+34}" fill="{CP_YELLOW}" fill-opacity="0.25"/>
-    <text x="{FL+38}" y="{M+46}" font-size="9" font-weight="800" letter-spacing="2" fill="{CP_YELLOW}">NETRUNNER CONSOLE v3.2</text>
+    <!-- Angled Cyberpunk Tech Accent Badge (Wider polygon covering full text) -->
+    <polygon points="{FL+16},52 {FL+32},72 {FL+224},72 {FL+240},52" fill="{CP_YELLOW}" fill-opacity="0.2"/>
+    <polygon points="{FL+16},52 {FL+32},72 {FL+224},72 {FL+240},52" fill="none" stroke="{CP_YELLOW}" stroke-opacity="0.75" stroke-width="1.2"/>
+    <text x="{FL+38}" y="62" dominant-baseline="central" font-size="9.5" font-weight="800" letter-spacing="1.5" fill="{CP_YELLOW}">NETRUNNER CONSOLE v3.2</text>
 
     <!-- Terminal Command Line Prompt -->
-    <text x="{X}" y="104" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> whoami --status</text>
+    <text x="{X}" y="104" dominant-baseline="central" class="dim"><tspan class="rd">[root@cyberdeck ~]#</tspan> whoami --status</text>
 
-    <!-- Chromatic Aberration Glitch Title: PALPARD -->
-    <g transform="translate({X}, 172)" font-weight="900" letter-spacing="4" style="font-size: 56px;">
+    <!-- Chromatic Aberration Glitch Title: PALPARD (Commanding 68px Hero Scale) -->
+    <g transform="translate({X}, 156)" font-weight="900" letter-spacing="6" style="font-size: 64px;">
       <!-- Crimson Shadow Layer -->
       <g class="glitch-cy">
-        <text x="3" y="0" fill="{CP_RED}" opacity="0.85">PALPARD</text>
+        <text x="3" y="0" dominant-baseline="central" fill="{CP_RED}" opacity="0.85">PALPARD</text>
       </g>
       <!-- Cyan Shadow Layer -->
       <g class="glitch-yw">
-        <text x="-3" y="0" fill="{CP_CYAN}" opacity="0.85">PALPARD</text>
+        <text x="-3" y="0" dominant-baseline="central" fill="{CP_CYAN}" opacity="0.85">PALPARD</text>
       </g>
       <!-- Main Signature Cyberpunk Yellow -->
-      <text x="0" y="0" fill="{CP_YELLOW}" filter="url(#glow-soft)">PALPARD</text>
-      <text x="0" y="0" fill="{CP_YELLOW}">PALPARD</text>
+      <text x="0" y="0" dominant-baseline="central" fill="{CP_YELLOW}" filter="url(#glow-soft)">PALPARD</text>
+      <text x="0" y="0" dominant-baseline="central" fill="{CP_YELLOW}">PALPARD</text>
     </g>
 
     <!-- Operator Specs HUD Box with Neon Framing -->
-    <g transform="translate({X}, 212)">
-      <text x="0" y="0" class="fg"><tspan class="yw">&gt;&gt; OPERATOR:</tspan> TAHA <tspan class="dim">//</tspan> <tspan class="cy">PALPARD</tspan></text>
-      <text x="0" y="24" class="fg"><tspan class="yw">&gt;&gt; CLASS:</tspan> SECURITY RESEARCHER &amp; BUG BOUNTY SPECIALIST</text>
-      <text x="0" y="48" class="fg"><tspan class="yw">&gt;&gt; SPECIALIZATION:</tspan> IDOR · BUSINESS LOGIC · SSRF · RECON AUTOMATION</text>
-      <text x="0" y="72" class="fg"><tspan class="yw">&gt;&gt; CYBERWARE:</tspan> MILITECH &quot;SANDEVISTAN&quot; MK.IV <tspan class="dim">//</tspan> ARASAKA OSINT DECK</text>
+    <g transform="translate({X}, 224)">
+      <text x="0" y="0" dominant-baseline="central" class="fg"><tspan class="yw">&gt;&gt; OPERATOR:</tspan> TAHA <tspan class="dim">//</tspan> <tspan class="cy">PALPARD</tspan></text>
+      <text x="0" y="25" dominant-baseline="central" class="fg"><tspan class="yw">&gt;&gt; CLASS:</tspan> SECURITY RESEARCHER &amp; BUG BOUNTY SPECIALIST</text>
+      <text x="0" y="50" dominant-baseline="central" class="fg"><tspan class="yw">&gt;&gt; SPECIALIZATION:</tspan> IDOR · BUSINESS LOGIC · SSRF · RECON AUTOMATION</text>
+      <text x="0" y="75" dominant-baseline="central" class="fg"><tspan class="yw">&gt;&gt; CYBERWARE:</tspan> MILITECH &quot;SANDEVISTAN&quot; MK.IV <tspan class="dim">//</tspan> ARASAKA OSINT DECK</text>
     </g>
 
-    <!-- Blinking Prompt -->
-    <g transform="translate({X}, 320)">
-      <text x="0" y="0" class="rd">[netrunner@night-city]$</text>
-      <rect class="cursor" x="180" y="-13" width="10" height="17" fill="{CP_YELLOW}" filter="url(#glow-neon)"/>
+    <!-- Right HUD Subsystem: Netrunner Uplink Status (Balances empty right space) -->
+    <g transform="translate({FR-242}, 112)">
+      <rect x="0" y="0" width="232" height="188" rx="3" fill="#060912" fill-opacity="0.85" stroke="{CP_CYAN}" stroke-opacity="0.4" stroke-width="1.2"/>
+      <rect x="0" y="0" width="232" height="22" rx="3" fill="{CP_CYAN}" fill-opacity="0.12"/>
+      <text x="10" y="11" dominant-baseline="central" font-size="9" font-weight="800" letter-spacing="0.5" fill="{CP_CYAN}">[DECK MATRIX // TELEMETRY]</text>
+      
+      <!-- Metrics & Status Bars -->
+      <text x="12" y="38" dominant-baseline="central" font-size="9.5" class="dim">NEURAL SYNC:</text>
+      <text x="220" y="38" dominant-baseline="central" text-anchor="end" font-size="10" font-weight="700" class="gr">99.8%</text>
+      <rect x="12" y="47" width="208" height="4" fill="#141E2E"/>
+      <rect x="12" y="47" width="192" height="4" fill="{CP_GREEN}"/>
+
+      <text x="12" y="68" dominant-baseline="central" font-size="9.5" class="dim">ICE DEFENSE:</text>
+      <text x="220" y="68" dominant-baseline="central" text-anchor="end" font-size="10" font-weight="700" class="cy">SECURE</text>
+      <rect x="12" y="77" width="208" height="4" fill="#141E2E"/>
+      <rect x="12" y="77" width="174" height="4" fill="{CP_CYAN}"/>
+
+      <text x="12" y="98" dominant-baseline="central" font-size="9.5" class="dim">GATEWAY ICE:</text>
+      <text x="220" y="98" dominant-baseline="central" text-anchor="end" font-size="10" font-weight="700" class="yw">BYPASSED</text>
+      <rect x="12" y="107" width="208" height="4" fill="#141E2E"/>
+      <rect x="12" y="107" width="204" height="4" fill="{CP_YELLOW}"/>
+
+      <!-- Sub-link Card -->
+      <g transform="translate(10, 128)">
+        <rect x="0" y="0" width="212" height="48" rx="2" fill="{CP_CYAN}" fill-opacity="0.08" stroke="{CP_CYAN}" stroke-opacity="0.25"/>
+        <circle class="dot-live" cx="12" cy="18" r="3.5" fill="{CP_GREEN}" filter="url(#glow-neon)"/>
+        <text x="24" y="16" dominant-baseline="central" font-size="9.5" font-weight="700" fill="{CP_FG}">NETRUNNER LINK: <tspan class="yw">ONLINE</tspan></text>
+        <text x="24" y="32" dominant-baseline="central" font-size="8.5" class="dim">NIGHT CITY · CORPO PLAZA</text>
+      </g>
+    </g>
+
+    <!-- Blinking Prompt (Cursor with 8px clearance, no overlap with ]$) -->
+    <g transform="translate({X}, 332)">
+      <text x="0" y="0" dominant-baseline="central" class="rd">[netrunner@night-city]$</text>
+      <rect class="cursor" x="204" y="-9" width="10" height="18" fill="{CP_YELLOW}" filter="url(#glow-neon)"/>
     </g>
 
     <!-- CRT Scanline Mask -->
-    <rect x="{FL}" y="{M+35}" width="{FR-FL}" height="{h-M-35}" fill="url(#crt-scan)" pointer-events="none"/>
+    <rect x="{FL}" y="{M+37}" width="{FR-FL}" height="{h-M-37}" fill="url(#crt-scan)" pointer-events="none"/>
     """
     return wrap_slice(h, body, title="PALPARD Netrunner Cyberdeck", desc="Cyberpunk console header for PALPARD", top=True)
 
